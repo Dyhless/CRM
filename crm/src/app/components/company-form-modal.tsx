@@ -5,6 +5,7 @@ import Modal, { ModalProps } from '@/app/components/modal';
 export interface CompanyFormModalProps extends ModalProps {
   onSubmit: CompanyFormProps['onSubmit'];
 }
+
 export default function CompanyFormModal({
   onSubmit,
   ...rest
