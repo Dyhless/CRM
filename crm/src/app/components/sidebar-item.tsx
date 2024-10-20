@@ -4,7 +4,7 @@ import Link from 'next/link';
 import clsx from 'clsx';
 
 export interface SidebarItemProps {
-  current: boolean;
+  current?: boolean;
   pathname: string;
   src: string;
   alt: string;

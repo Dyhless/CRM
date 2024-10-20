@@ -1,16 +1,16 @@
-'use client'
+'use client';
 
 import React from 'react';
 import Image from 'next/image';
 import SidebarItem from '@/app/components/sidebar-item';
-import { useRouter } from 'next/router';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 export type SidebarProps = object
 
-export default function Sidebar({ }: SidebarProps) {
+export default function Sidebar({}: SidebarProps) {
   const router = useRouter();
   const pathname = usePathname();
+
   const handleExitClick = () => {
     router.push('/');
   };
@@ -45,7 +45,8 @@ export default function Sidebar({ }: SidebarProps) {
         </ul>
         <button
           className="flex items-center gap-2 p-6 mt-auto mx-auto"
-          onClick={handleExitClick}>
+          onClick={handleExitClick}
+        >
           <Image
             width={18}
             height={18}
