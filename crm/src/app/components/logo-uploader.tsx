@@ -4,6 +4,7 @@ import Image from 'next/image';
 
 export interface LogoUploaderProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
+  square?: boolean; 
   label?: string;
 }
 export default function LogoUploader({
