@@ -3,7 +3,7 @@
 import React from 'react';
 import { Form, Formik } from 'formik';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { getPromotions, getCompany } from '@/app/lib/api';
+import { createPromotion, getCompany } from '@/app/lib/api';
 import Button from '@/app/components/button';
 import InputField from '@/app/components/input-field';
 import LogoUploader from '@/app/components/logo-uploader';
@@ -11,13 +11,13 @@ import LogoUploader from '@/app/components/logo-uploader';
 export type PromotionFieldValues = {
   title: string;
   description: string;
-  discount: string; 
+  discount: string | number;
 };
 
 const initialValues: PromotionFieldValues = {
   title: '',
   description: '',
-  discount: '', 
+  discount: '',
 };
 
 export interface PromotionFormProps {
@@ -39,7 +39,7 @@ export default function PromotionForm({
   });
 
   const { mutateAsync, isPending } = useMutation({
-    mutationFn: getPromotions,
+    mutationFn: createPromotion,
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['promotions', companyId],
@@ -54,17 +54,14 @@ export default function PromotionForm({
 
   const handleSubmit = async (values: PromotionFieldValues) => {
     if (!company) {
-      return;
-    }
-
-    const submissionData = {
+    return;
+  }
+    await mutateAsync({
       ...values,
-      discount: String(Number(values.discount)) || '0',
+      discount: Number(values.discount) || 0,
       companyId: company.id,
       companyTitle: company.title,
-    };
-
-    await mutateAsync(submissionData);
+    });
 
     if (onSubmit) {
       onSubmit(values);
@@ -85,7 +82,7 @@ export default function PromotionForm({
           />
           <InputField
             required
-            type="text" 
+            type="number"
             label="Discount"
             placeholder="Discount"
             name="discount"
