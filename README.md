@@ -1,6 +1,20 @@
-# CRM Project
+# CRM for Vendors
 
-Welcome to the **CRM Project** — a powerful and flexible customer relationship management system designed to streamline business processes, enhance customer interactions, and boost productivity.
+Welcome to the **CRM for Vendors** project, also known as the **Admin Panel for a Food Delivery Company**.
+This CRM-like web application is designed to optimize the management of supplier information.
+
+## Technologies Used
+
+- **Next.js**
+- **TypeScript**
+- **JavaScript**
+- **CSS**
+
+- **Formik**
+- **@tanstack/react-query**
+
+- **Figma**
+- **Vercel**
 
 ## Features
 
