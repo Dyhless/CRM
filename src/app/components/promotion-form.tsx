@@ -54,8 +54,9 @@ export default function PromotionForm({
 
   const handleSubmit = async (values: PromotionFieldValues) => {
     if (!company) {
-    return;
-  }
+      return;
+    }
+
     await mutateAsync({
       ...values,
       discount: Number(values.discount) || 0,
