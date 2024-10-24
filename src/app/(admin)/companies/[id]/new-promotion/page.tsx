@@ -37,7 +37,7 @@ export async function generateStaticParams() {
   const companies = await getCompanies();
   console.log("Fetched companies:", companies);
 
-  if (!companies.length) {
+  if (!companies || companies.length === 0) {
     console.error("No companies found");
     return [];
   }
@@ -45,7 +45,8 @@ export async function generateStaticParams() {
   return companies.map((company) => {
     if (!company.id) {
       console.error("Company without id:", company);
+      return null; 
     }
     return { id: company.id.toString() };
-  });
+  }).filter(Boolean); 
 }
