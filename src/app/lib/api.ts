@@ -83,16 +83,8 @@ export const getCountries = (init?: RequestInit) => {
   return sendRequest<Country[]>(buildUrl('countries'), init);
 };
 
-const validateCategory = (category: Category) => {
-  if (!category.id || typeof category.id !== 'string') {
-    throw new Error('Invalid category data');
-  }
-  return category;
-};
-
-export const getCategories = async (init?: RequestInit) => {
-  const categories = await sendRequest<Category[]>(buildUrl('categories'), init);
-  return categories.map(validateCategory);
+export const getCategories = (init?: RequestInit) => {
+  return sendRequest<Category[]>(buildUrl('categories'), init);
 };
 
 export const getCompanies = (init?: RequestInit) => {

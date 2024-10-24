@@ -1,48 +1,51 @@
-import React from 'react';
-import { Category, Company, getCategories, getCompanies } from '@/app/lib/api';
-import getCountById from '@/app/lib/utils/getCountById';
+'use client';
+
+import React, { useEffect, useState } from 'react';
 import StatCard, { StatCardType } from '@/app/components/stat-card';
 import DashboardCard from '@/app/components/dashboard-card';
+import getCountById from '@/app/lib/utils/getCountById';
 
-export type PageProps = object;
+export default function Page() {
+  const [categories, setCategories] = useState([]);
+  const [companies, setCompanies] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-export default async function Page({}: PageProps) {
-  let categories: Category[] = [];
-  let companies: Company[] = [];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const companiesRes = await fetch('/api/companies');
+        const companiesData = await companiesRes.json();
+        setCompanies(companiesData);
 
-  try {
-    categories = await getCategories();
-    companies = await getCompanies();
-  } catch (error) {
-    console.error('Error loading data:', error);
-    return <div>Error loading data</div>;
-  }
+        const categoriesRes = await fetch('/api/categories');
+        const categoriesData = await categoriesRes.json();
+        setCategories(categoriesData);
+      } catch (error) {
+        console.error('Error loading data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  if (!categories || !companies) {
-    return <div>No data available</div>;
-  }
+    fetchData();
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
 
   const counts = getCountById(companies, 'categoryId');
 
   return (
     <DashboardCard label="Categories of companies">
       <div className="grid grid-cols-12 gap-3 pb-5 px-5">
-        {categories.map(({ id, title }) => {
-          if (!id) {
-            console.error('Category has no valid ID:', title);
-            return null;
-          }
-
-          return (
-            <div key={id} className="col-span-3">
-              <StatCard
-                type={StatCardType.Dark}
-                label={title}
-                counter={counts[id] || 0}
-              />
-            </div>
-          );
-        })}
+        {categories.map(({ id, title }) => (
+          <div key={id} className="col-span-3">
+            <StatCard
+              type={StatCardType.Dark}
+              label={title}
+              counter={counts[id] || 0}
+            />
+          </div>
+        ))}
       </div>
     </DashboardCard>
   );
