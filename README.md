@@ -3,18 +3,18 @@
 Welcome to the **CRM for Vendors** project, also known as the **Admin Panel for a Food Delivery Company**.
 This CRM-like web application is designed to optimize the management of supplier information.
 
+**The project template was designed in** ['Figma'](https://www.figma.com/design/dPmdjAc0qKNMCKwWiC33QZ/CRM?node-id=15-5860&node-type=frame&t=wgWTL1NoHSCGWEg9-0)
+
+**The project was deployed and hosted on the ['Vercel'](https://crm-vert.vercel.app/dashboard) platform.**
+
 ## Technologies Used
 
 - **Next.js**
 - **TypeScript**
 - **JavaScript**
 - **CSS**
-
 - **Formik**
-- **@tanstack/react-query**
-
-- **Figma**
-- **Vercel**
+- **React-query**
 
 ## Features
 
