@@ -9,20 +9,18 @@ export interface CompanyPromotionsProps {
   companyId: string;
 }
 
-export default function CompanyPromotions({ companyId }: CompanyPromotionsProps) {
+export default function CompanyPromotions({
+  companyId,
+}: CompanyPromotionsProps) {
   const { data } = useQuery({
     queryKey: ['promotions', companyId],
     queryFn: () => getPromotions({ companyId }),
     staleTime: 10 * 1000,
   });
 
-  if (!data || data.length === 0) {
-    return <p>No promotions available</p>;
-  }
-
   return (
     <div className="grid grid-cols-12 gap-5">
-      {data.map((promotion) => (
+      {data?.map((promotion) => (
         <div key={promotion.id} className="col-span-4">
           <Promotion promotion={promotion} />
         </div>
