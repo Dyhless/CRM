@@ -1,14 +1,22 @@
 import React from 'react';
-import { getCategories, getCompanies } from '@/app/lib/api';
+import { Category, Company, getCategories, getCompanies } from '@/app/lib/api';
 import getCountById from '@/app/lib/utils/getCountById';
 import StatCard, { StatCardType } from '@/app/components/stat-card';
 import DashboardCard from '@/app/components/dashboard-card';
 
-export type PageProps = object
+export type PageProps = object;
 
 export default async function Page({}: PageProps) {
-  const categories = await getCategories();
-  const companies = await getCompanies();
+  let categories: Category[] = [];
+  let companies: Company[] = [];
+
+  try {
+    categories = await getCategories();
+    companies = await getCompanies();
+  } catch (error) {
+    console.error('Error loading data:', error);
+    return <div>Error loading data</div>;
+  }
 
   const counts = getCountById(companies, 'categoryId');
 
