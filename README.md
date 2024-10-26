@@ -18,7 +18,7 @@ This CRM-like web application is designed to optimize the management of supplier
 
 ## Features
 
-- **User-friendly Interface**: Intuitive and easy-to-use design for seamless navigation
+- **User-friendly Interface**: Intuitive and easy-to-use design for seamless navigation.
 - **Customer Management**: Efficient tools for managing customer data, including contact information, interactions, and sales tracking.
 - **Analytics & Reports**: Generate real-time reports and dashboards for better decision-making.
 - **Integration with Third-party Apps**: Connect your CRM with other tools like marketing platforms and email clients.
