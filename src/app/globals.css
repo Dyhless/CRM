@@ -10,4 +10,11 @@
 
 body {
   background-color: #fafafa;
+  color: #111827;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+html.dark body {
+  background-color: #09090b;
+  color: #f4f4f5;
 }

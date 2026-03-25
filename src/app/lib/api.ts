@@ -55,20 +55,73 @@ export interface Promotion {
 }
 
 const PROJECT_TOKEN = process.env.NEXT_PUBLIC_PROJECT_TOKEN;
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-const buildUrl = (...paths: string[]) =>
-  `https://${PROJECT_TOKEN}.mockapi.io/api/v1/${paths.join('/')}`;
+const getApiBaseUrl = () => {
+  if (API_BASE_URL) {
+    return API_BASE_URL.replace(/\/$/, '');
+  }
+
+  if (PROJECT_TOKEN) {
+    return `https://${PROJECT_TOKEN}.mockapi.io/api/v1`;
+  }
+
+  throw new Error(
+    'API is not configured. Set NEXT_PUBLIC_PROJECT_TOKEN or NEXT_PUBLIC_API_BASE_URL in .env.local.',
+  );
+};
+
+const buildUrl = (...paths: string[]) => `${getApiBaseUrl()}/${paths.join('/')}`;
 
 const stringifyQueryParams = (params: Record<string, string>) =>
   new URLSearchParams(params).toString();
 
+const normalizeId = <T extends Record<string, unknown>>(item: T) => {
+  if ('id' in item && item.id) {
+    return item;
+  }
+
+  if ('_id' in item && typeof item._id === 'string') {
+    return { ...item, id: item._id };
+  }
+
+  return item;
+};
+
+const normalizePayload = <T>(payload: unknown): T => {
+  if (Array.isArray(payload)) {
+    return payload.map((item) =>
+      typeof item === 'object' && item !== null
+        ? normalizeId(item as Record<string, unknown>)
+        : item,
+    ) as T;
+  }
+
+  if (typeof payload === 'object' && payload !== null) {
+    const record = payload as Record<string, unknown>;
+
+    if (Array.isArray(record.items)) {
+      return record.items.map((item) =>
+        typeof item === 'object' && item !== null
+          ? normalizeId(item as Record<string, unknown>)
+          : item,
+      ) as T;
+    }
+
+    return normalizeId(record) as T;
+  }
+
+  return payload as T;
+};
+
 const sendRequest = async <T>(url: string, init?: RequestInit) => {
   const res = await fetch(url, init);
   if (!res.ok) {
-    throw new Error(await res.text());
+    throw new Error(`Request failed (${res.status}) for ${url}: ${await res.text()}`);
   }
 
-  return (await res.json()) as T;
+  const payload = await res.json();
+  return normalizePayload<T>(payload);
 };
 
 export const getSummaryStats = (init?: RequestInit) => {

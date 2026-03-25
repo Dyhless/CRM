@@ -42,6 +42,14 @@ export default function Sidebar({}: SidebarProps) {
           >
             Companies
           </SidebarItem>
+          <SidebarItem
+            current={pathname === '/dark-mode'}
+            pathname="/dark-mode"
+            src="/icons/squares.svg"
+            alt="dark mode icon"
+          >
+            Dark Mode
+          </SidebarItem>
         </ul>
         <button
           className="flex items-center gap-2 p-6 mt-auto mx-auto"
